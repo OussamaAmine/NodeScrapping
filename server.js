@@ -18,8 +18,13 @@ const ouedknissProducts = async (html) => {
   const data = JSON.parse(dataJson);
   const products = [];
   data.forEach((object) => {
-    const title = object.name;
-    const desc = object.description;
+    const title = object.name.trim();
+    let desc;
+    if (object.description) {
+      desc = object.description.trim();
+    } else {
+      desc = object.description;
+    }
     const img = object.image;
     const { price } = object.offers;
 
@@ -94,8 +99,12 @@ async function dubizzleProducts(page) {
       aImg.childNodes.forEach((el) => {
         if (el.name && el.name === 'div') divImg = el;
       });
-      if (divImg.attribs && divImg.attribs.style) {
-        img = divImg.attribs.style.split('(')[1].split(')')[0];
+      if (divImg) {
+        if (divImg.attribs) {
+          if (divImg.attribs.style) {
+            img = divImg.attribs.style.split('(')[1].split(')')[0];
+          }
+        }
       }
       let divBlc;
       divDescription.childNodes.forEach((el) => {
